@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: folio-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: folio
+      POSTGRES_PASSWORD: folio
+      POSTGRES_DB: folio
+    volumes:
+      - folio_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U folio -d folio"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: folio-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - folio_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Object storage for materials (Week 3+). Image: quay.io mirror for broader pull access.
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: folio-minio
+    restart: unless-stopped
+    profiles: ["storage"]
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: folio
+      MINIO_ROOT_PASSWORD: folio-minio-secret
+    volumes:
+      - folio_minio_data:/data
+
+volumes:
+  folio_postgres_data:
+  folio_redis_data:
+  folio_minio_data:

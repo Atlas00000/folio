@@ -1,0 +1,14 @@
+{
+  "id": "a1-core-domain-0001",
+  "prevId": "a0-users-sessions-0000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {},
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

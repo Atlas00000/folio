@@ -1,0 +1,14 @@
+{
+  "id": "a2-attempts-progress-0002",
+  "prevId": "a1-core-domain-0001",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {},
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}
