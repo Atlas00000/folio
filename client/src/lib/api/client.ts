@@ -1,3 +1,4 @@
+import { apiLogger } from '../logging';
 import type { ApiErrorBody } from '../types';
 
 export const API_URL =
@@ -21,16 +22,34 @@ export async function api<T = unknown>(
   path: string,
   init: RequestInit = {},
 ): Promise<T> {
+  const method = (init.method ?? 'GET').toUpperCase();
+  const started = typeof performance !== 'undefined' ? performance.now() : Date.now();
   const headers = new Headers(init.headers);
   if (init.body && !(init.body instanceof FormData) && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
 
-  const res = await fetch(`${API_URL}${path}`, {
-    ...init,
-    headers,
-    credentials: 'include',
-  });
+  apiLogger.debug('request', { method, path });
+
+  let res: Response;
+  try {
+    res = await fetch(`${API_URL}${path}`, {
+      ...init,
+      headers,
+      credentials: 'include',
+    });
+  } catch (err) {
+    const durationMs = Math.round(
+      (typeof performance !== 'undefined' ? performance.now() : Date.now()) - started,
+    );
+    apiLogger.error('network_error', {
+      method,
+      path,
+      durationMs,
+      err: err instanceof Error ? err.message : String(err),
+    });
+    throw err;
+  }
 
   const text = await res.text();
   let data: unknown = null;
@@ -42,13 +61,30 @@ export async function api<T = unknown>(
     }
   }
 
+  const durationMs = Math.round(
+    (typeof performance !== 'undefined' ? performance.now() : Date.now()) - started,
+  );
+
   if (!res.ok) {
+    apiLogger.warn('response_error', {
+      method,
+      path,
+      status: res.status,
+      durationMs,
+    });
     throw new ApiError(
       res.status,
       (data as ApiErrorBody) ?? null,
       res.statusText || 'Request failed',
     );
   }
+
+  apiLogger.debug('response', {
+    method,
+    path,
+    status: res.status,
+    durationMs,
+  });
 
   return data as T;
 }

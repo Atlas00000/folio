@@ -2,7 +2,9 @@
 
 import { RequireAuth } from '@/features/auth/RequireAuth';
 import { useAuth } from '@/features/auth/AuthProvider';
-import { Button, NavLink, Shell } from '@/components/ui';
+import { AppShell } from '@/design/shells';
+import { Button, Text } from '@/design/primitives';
+import { ThemeToggle } from '@/design/ThemeProvider';
 
 export default function LecturerLayout({
   children,
@@ -12,13 +14,28 @@ export default function LecturerLayout({
   const { user, logout } = useAuth();
   return (
     <RequireAuth roles={['lecturer', 'ta', 'admin']}>
-      <Shell
+      <AppShell
         brandHref="/lecturer/courses"
-        nav={
+        greeting={user?.displayName ?? null}
+        tabs={[
+          {
+            href: '/lecturer/courses',
+            label: 'Courses',
+            mark: 'ledger',
+          },
+          {
+            href: '/lecturer/courses/new',
+            label: 'New',
+            mark: 'plus',
+            exact: true,
+          },
+        ]}
+        meta={
           <>
-            <NavLink href="/lecturer/courses">Courses</NavLink>
-            <NavLink href="/lecturer/courses/new">New course</NavLink>
-            <span className="text-[var(--ink-muted)]">{user?.displayName}</span>
+            <ThemeToggle />
+            <Text as="span" size="sm" tone="muted" face="mono">
+              {user?.displayName}
+            </Text>
             <Button variant="ghost" type="button" onClick={() => void logout()}>
               Sign out
             </Button>
@@ -26,7 +43,7 @@ export default function LecturerLayout({
         }
       >
         {children}
-      </Shell>
+      </AppShell>
     </RequireAuth>
   );
 }

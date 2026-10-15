@@ -12,13 +12,23 @@ import * as path from 'path';
 import { AppModule } from './app.module';
 import { API_CONTRACT_VERSION } from './common/api-version';
 import { resolveCorsOrigin } from './common/cors';
+import {
+  FolioLogger,
+  RequestLoggingInterceptor,
+  createFastifyLoggerOptions,
+  rootLogger,
+} from './common/logging';
 import { registerRateLimit } from './common/rate-limit';
 
 async function bootstrap() {
+  const nestLogger = new FolioLogger('Nest');
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter({ logger: true }),
+    new FastifyAdapter({ logger: createFastifyLoggerOptions() }),
+    { logger: nestLogger },
   );
+
+  app.useGlobalInterceptors(new RequestLoggingInterceptor());
 
   await app.register(cookie, {
     secret: process.env.SESSION_SECRET ?? 'folio-dev-cookie-secret',
@@ -79,12 +89,17 @@ async function bootstrap() {
     JSON.stringify(document, null, 2),
     'utf8',
   );
-  console.log(`OpenAPI contract written to openapi/openapi.json (v${API_CONTRACT_VERSION})`);
+  rootLogger.info('openapi_written', {
+    path: 'openapi/openapi.json',
+    version: API_CONTRACT_VERSION,
+  });
 
   const port = Number(process.env.PORT ?? 3001);
   await app.listen(port, '0.0.0.0');
-  console.log(`Folio API listening on http://localhost:${port}`);
-  console.log(`Swagger docs at http://localhost:${port}/docs`);
+  rootLogger.info('api_listening', {
+    port,
+    docs: `http://localhost:${port}/docs`,
+  });
 }
 
 bootstrap();

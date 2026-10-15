@@ -246,6 +246,12 @@ async function main() {
 
   const course = await ensureAcc101(lecturer.id, student.id);
 
+  const { expandAcc101 } = await import('./seed-acc101-expand');
+  await expandAcc101();
+
+  const { seedAccSuite } = await import('./seed-acc-suite');
+  await seedAccSuite();
+
   console.log('Seed complete.');
   console.log('  lecturer@example.ac.uk / password123');
   console.log('  student@example.ac.uk / password123');

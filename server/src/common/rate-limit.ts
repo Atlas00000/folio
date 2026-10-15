@@ -1,6 +1,9 @@
 import rateLimit from '@fastify/rate-limit';
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import Redis from 'ioredis';
+import { FolioLogger } from './logging';
+
+const log = new FolioLogger('rate-limit');
 
 /**
  * Registers Fastify rate limiting.
@@ -18,12 +21,12 @@ export async function registerRateLimit(app: NestFastifyApplication) {
     });
     await redis.connect();
     await redis.ping();
-    console.log('Rate limit store: Redis');
+    log.info('rate_limit_store', { store: 'redis' });
   } catch (err) {
-    console.warn(
-      'Rate limit store: memory (Redis unavailable)',
-      err instanceof Error ? err.message : err,
-    );
+    log.warn('rate_limit_store', {
+      store: 'memory',
+      reason: err instanceof Error ? err.message : String(err),
+    });
     if (redis) {
       try {
         redis.disconnect();

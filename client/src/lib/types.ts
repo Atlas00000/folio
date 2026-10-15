@@ -8,6 +8,8 @@ export type User = {
   status: 'active' | 'disabled' | 'pending';
 };
 
+export type CourseRole = 'student' | 'lecturer' | 'ta';
+
 export type Course = {
   id: string;
   code: string;
@@ -16,6 +18,8 @@ export type Course = {
   description?: string | null;
   joinCode?: string;
   status?: string;
+  /** Present on list-from-enrolment responses */
+  myRole?: CourseRole | string;
 };
 
 export type Topic = {
@@ -68,12 +72,15 @@ export type AttemptSubmitResponse = {
   next: { canRequestHint: boolean; canRetry: boolean; canReveal: boolean };
 };
 
+/** `/courses/:id/progress/me` topic row */
 export type ProgressRow = {
   topicId: string;
-  topicTitle?: string;
-  attemptCount: number | string;
+  title: string;
+  sequence: number;
+  attemptsCount: number | string;
   correctCount: number | string;
   masteryScore: number | string;
+  weak: boolean;
 };
 
 export type ApiErrorBody = {

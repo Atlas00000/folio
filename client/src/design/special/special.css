@@ -1,0 +1,115 @@
+/* Folio special surfaces — loading / 404 instrument void */
+
+@keyframes folio-signal-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes folio-tick-rise {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes folio-ledger-drift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 48px 48px;
+  }
+}
+
+@keyframes folio-glow-breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes folio-code-flicker {
+  0%,
+  92%,
+  100% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.35;
+  }
+  94% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes folio-scan {
+  0% {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(120%);
+    opacity: 0;
+  }
+}
+
+.folio-special-atmosphere {
+  background-image:
+    linear-gradient(var(--folio-hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--folio-hairline) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: folio-ledger-drift 28s linear infinite;
+}
+
+.folio-special-sweep {
+  animation: folio-signal-sweep 8s linear infinite;
+}
+
+.folio-special-tick {
+  transform-origin: center bottom;
+  animation: folio-tick-rise 1.4s var(--folio-ease-in-out) infinite;
+}
+
+.folio-special-glow {
+  animation: folio-glow-breathe 3.2s var(--folio-ease-in-out) infinite;
+}
+
+.folio-special-flicker {
+  animation: folio-code-flicker 4.5s steps(1, end) infinite;
+}
+
+.folio-special-scan {
+  animation: folio-scan 2.8s var(--folio-ease-in-out) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .folio-special-atmosphere,
+  .folio-special-sweep,
+  .folio-special-tick,
+  .folio-special-glow,
+  .folio-special-flicker,
+  .folio-special-scan {
+    animation: none;
+  }
+}

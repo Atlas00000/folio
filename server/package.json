@@ -19,6 +19,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed.ts",
+    "db:seed:acc101": "tsx scripts/seed-acc101-expand.ts",
+    "db:seed:acc-suite": "tsx scripts/seed-acc-suite.ts",
     "migrate": "pnpm db:migrate",
     "openapi:export": "tsx scripts/export-openapi.ts"
   },

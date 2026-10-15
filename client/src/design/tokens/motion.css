@@ -1,0 +1,69 @@
+:root {
+  --folio-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --folio-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --folio-dur-fast: 120ms;
+  --folio-dur-base: 200ms;
+  --folio-dur-enter: 360ms;
+  --folio-dur-tick: 480ms;
+}
+
+@keyframes folio-page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes folio-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes folio-skeleton {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.folio-page-enter {
+  animation: folio-page-enter var(--folio-dur-enter) var(--folio-ease-out) both;
+}
+
+.folio-page-enter-delay-1 {
+  animation-delay: 60ms;
+}
+
+.folio-page-enter-delay-2 {
+  animation-delay: 120ms;
+}
+
+.folio-page-enter-delay-3 {
+  animation-delay: 180ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --folio-dur-fast: 0ms;
+    --folio-dur-base: 0ms;
+    --folio-dur-enter: 0ms;
+    --folio-dur-tick: 0ms;
+  }
+
+  .folio-page-enter,
+  .folio-page-enter-delay-1,
+  .folio-page-enter-delay-2,
+  .folio-page-enter-delay-3 {
+    animation: none;
+  }
+}

@@ -1,0 +1,10 @@
+:root {
+  --folio-elev-0: none;
+  --folio-elev-1: 0 1px 0 color-mix(in srgb, var(--folio-ink) 6%, transparent);
+  --folio-elev-2: 0 10px 28px color-mix(in srgb, var(--folio-void) 55%, transparent);
+  /* No glow — hairline edge only */
+  --folio-elev-signal: 0 0 0 1px color-mix(in srgb, var(--folio-signal) 35%, transparent);
+  --folio-radius-sm: 2px;
+  --folio-radius-md: 4px;
+  --folio-radius-lg: 6px;
+}

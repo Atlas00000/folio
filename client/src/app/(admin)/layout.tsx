@@ -2,7 +2,9 @@
 
 import { RequireAuth } from '@/features/auth/RequireAuth';
 import { useAuth } from '@/features/auth/AuthProvider';
-import { Button, NavLink, Shell } from '@/components/ui';
+import { AppShell } from '@/design/shells';
+import { Button, Text } from '@/design/primitives';
+import { ThemeToggle } from '@/design/ThemeProvider';
 
 export default function AdminLayout({
   children,
@@ -12,13 +14,27 @@ export default function AdminLayout({
   const { user, logout } = useAuth();
   return (
     <RequireAuth roles={['admin']}>
-      <Shell
+      <AppShell
         brandHref="/admin/courses"
-        nav={
+        greeting={user?.displayName ?? null}
+        tabs={[
+          {
+            href: '/admin/courses',
+            label: 'Admin',
+            mark: 'staff',
+          },
+          {
+            href: '/lecturer/courses',
+            label: 'Staff',
+            mark: 'ledger',
+          },
+        ]}
+        meta={
           <>
-            <NavLink href="/admin/courses">Courses</NavLink>
-            <NavLink href="/lecturer/courses">Lecturer view</NavLink>
-            <span className="text-[var(--ink-muted)]">{user?.displayName}</span>
+            <ThemeToggle />
+            <Text as="span" size="sm" tone="muted" face="mono">
+              {user?.displayName}
+            </Text>
             <Button variant="ghost" type="button" onClick={() => void logout()}>
               Sign out
             </Button>
@@ -26,7 +42,7 @@ export default function AdminLayout({
         }
       >
         {children}
-      </Shell>
+      </AppShell>
     </RequireAuth>
   );
 }

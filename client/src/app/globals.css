@@ -1,35 +1,50 @@
 @import "tailwindcss";
-
-:root {
-  --paper: #f3f1eb;
-  --paper-raised: #faf8f3;
-  --wash: #e8e4da;
-  --ink: #1c2430;
-  --ink-muted: #5b6573;
-  --rule: #d5d0c4;
-  --accent: #1f6b4a;
-  --accent-deep: #165338;
-  --background: var(--paper);
-  --foreground: var(--ink);
-}
+@import "../design/tokens/color.css";
+@import "../design/tokens/space.css";
+@import "../design/tokens/type.css";
+@import "../design/tokens/motion.css";
+@import "../design/tokens/elevation.css";
+@import "../design/special/special.css";
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-body);
   --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+html {
+  color-scheme: dark light;
 }
 
 body {
-  background:
-    radial-gradient(1200px 500px at 10% -10%, rgba(31, 107, 74, 0.08), transparent),
-    linear-gradient(180deg, #f7f5ef 0%, var(--paper) 40%, #ebe7dd 100%);
-  color: var(--ink);
-  font-family: var(--font-body), "Segoe UI", sans-serif;
+  background: var(--folio-canvas);
+  color: var(--folio-ink);
+  font-family: var(--folio-font-body);
   min-height: 100dvh;
+  font-feature-settings: "tnum" 1;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+::selection {
+  background: var(--folio-signal-dim);
+  color: var(--folio-ink);
+}
+
+/* Focus visible — signal ring, not browser default blue */
+:focus-visible {
+  outline: 2px solid var(--folio-signal);
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: none;
 }

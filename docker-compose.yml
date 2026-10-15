@@ -1,3 +1,11 @@
+# Shared container log rotation (json-file) — keeps `docker logs` usable locally.
+x-folio-logging: &folio-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+    tag: "{{.Name}}"
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -9,6 +17,19 @@ services:
       POSTGRES_USER: folio
       POSTGRES_PASSWORD: folio
       POSTGRES_DB: folio
+    # Surface slow queries + connections for local debugging
+    command:
+      - postgres
+      - -c
+      - log_min_duration_statement=500
+      - -c
+      - log_checkpoints=on
+      - -c
+      - log_connections=on
+      - -c
+      - log_disconnections=on
+      - -c
+      - log_line_prefix=%t [%p] %u@%d 
     volumes:
       - folio_postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -16,6 +37,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    logging: *folio-logging
 
   redis:
     image: redis:7-alpine
@@ -23,6 +45,7 @@ services:
     restart: unless-stopped
     ports:
       - "6379:6379"
+    command: ["redis-server", "--loglevel", "notice"]
     volumes:
       - folio_redis_data:/data
     healthcheck:
@@ -30,6 +53,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    logging: *folio-logging
 
   # Object storage for materials (Week 3+). Image: quay.io mirror for broader pull access.
   minio:
@@ -46,6 +70,7 @@ services:
       MINIO_ROOT_PASSWORD: folio-minio-secret
     volumes:
       - folio_minio_data:/data
+    logging: *folio-logging
 
 volumes:
   folio_postgres_data:

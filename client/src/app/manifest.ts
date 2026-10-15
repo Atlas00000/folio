@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'First-year accounting learning PWA',
     start_url: '/',
     display: 'standalone',
-    background_color: '#f3f1eb',
-    theme_color: '#1f6b4a',
+    background_color: '#0e0f10',
+    theme_color: '#0e0f10',
     icons: [
       {
         src: '/icon.svg',

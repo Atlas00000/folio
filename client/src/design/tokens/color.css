@@ -1,0 +1,74 @@
+/**
+ * Custom hybrid — Folio
+ * Light: Option D — Graphite & Verdigris (restrained)
+ * Dark:  Option B — Carbon & Bone Editorial (ink-blue)
+ *
+ * See APP_THEME.md. Toggle: <html data-theme="dark|light">
+ * Default: dark
+ */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Option B — Carbon & Bone */
+  --folio-void: #0a0b0c;
+  --folio-canvas: #0e0f10;
+  --folio-plane: #17181a;
+  --folio-plane-raised: #1f2124;
+  --folio-hairline: rgba(236, 234, 230, 0.08);
+  --folio-hairline-strong: #2c2e33;
+  --folio-ink: #eceae6;
+  --folio-ink-muted: #8b8f98;
+  --folio-ink-faint: #5c5f66;
+  --folio-signal: #7a9bc7;
+  --folio-signal-deep: #5a7a9e;
+  --folio-signal-dim: rgba(122, 155, 199, 0.14);
+  --folio-warn: #c4a035;
+  --folio-warn-dim: rgba(196, 160, 53, 0.14);
+  --folio-halt: #e07070;
+  --folio-halt-dim: rgba(224, 112, 112, 0.14);
+  --folio-ok: #6fa88a;
+  --folio-ok-dim: rgba(111, 168, 138, 0.14);
+  --folio-on-signal: #0e0f10;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Option D — Graphite & Verdigris */
+  --folio-void: #e3e3dd;
+  --folio-canvas: #efefeb;
+  --folio-plane: #f7f7f4;
+  --folio-plane-raised: #ffffff;
+  --folio-hairline: rgba(22, 26, 24, 0.08);
+  --folio-hairline-strong: #c8cbc5;
+  --folio-ink: #161a18;
+  --folio-ink-muted: #5e6661;
+  --folio-ink-faint: #8d9690;
+  --folio-signal: #3d6b5e;
+  --folio-signal-deep: #2f544a;
+  --folio-signal-dim: rgba(61, 107, 94, 0.12);
+  --folio-warn: #8f7328;
+  --folio-warn-dim: rgba(143, 115, 40, 0.12);
+  --folio-halt: #8c4038;
+  --folio-halt-dim: rgba(140, 64, 56, 0.12);
+  --folio-ok: #3d6b5e;
+  --folio-ok-dim: rgba(61, 107, 94, 0.12);
+  --folio-on-signal: #f7f7f4;
+}
+
+:root,
+[data-theme="dark"],
+[data-theme="light"] {
+  --paper: var(--folio-canvas);
+  --paper-raised: var(--folio-plane-raised);
+  --wash: var(--folio-plane);
+  --ink: var(--folio-ink);
+  --ink-muted: var(--folio-ink-muted);
+  --rule: var(--folio-hairline-strong);
+  --accent: var(--folio-signal);
+  --accent-deep: var(--folio-signal-deep);
+  --background: var(--folio-canvas);
+  --foreground: var(--folio-ink);
+}

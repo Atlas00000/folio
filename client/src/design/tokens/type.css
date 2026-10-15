@@ -1,0 +1,20 @@
+:root {
+  --folio-font-display: var(--font-display), "Times New Roman", serif;
+  --folio-font-body: var(--font-body), "Segoe UI", sans-serif;
+  --folio-font-mono: var(--font-mono), ui-monospace, monospace;
+
+  --folio-text-xs: 0.75rem;
+  --folio-text-sm: 0.875rem;
+  --folio-text-md: 1rem;
+  --folio-text-lg: 1.125rem;
+  --folio-text-xl: 1.5rem;
+  --folio-text-2xl: 2rem;
+  --folio-text-3xl: 2.75rem;
+  --folio-text-hero: clamp(2.75rem, 6vw, 4.25rem);
+
+  --folio-leading-tight: 1.15;
+  --folio-leading-snug: 1.35;
+  --folio-leading-normal: 1.5;
+  --folio-tracking-label: 0.14em;
+  --folio-tracking-tight: -0.02em;
+}

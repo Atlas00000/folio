@@ -1,109 +1,52 @@
+/**
+ * Compatibility facade — existing pages keep importing from here.
+ * New work should prefer `@/design/*` directly.
+ */
 import Link from 'next/link';
-import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { AppShell } from '@/design/shells';
+import { Button as DsButton } from '@/design/primitives/Button';
+import { Field as DsField, TextArea as DsTextArea, Select as DsSelect } from '@/design/primitives/Input';
+import { Surface } from '@/design/primitives/Surface';
+import { Text } from '@/design/primitives/Text';
+
+export { AppShell };
 
 export function Shell({
   brandHref,
-  nav,
   children,
 }: {
   brandHref: string;
-  nav: ReactNode;
+  /** @deprecated ignored — use AppShell with `tabs` */
+  nav?: ReactNode;
   children: ReactNode;
 }) {
   return (
-    <div className="min-h-dvh bg-[var(--paper)] text-[var(--ink)]">
-      <header className="border-b border-[var(--rule)] bg-[var(--paper-raised)]/80 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
-          <Link
-            href={brandHref}
-            className="font-[family-name:var(--font-display)] text-2xl tracking-tight text-[var(--ink)]"
-          >
-            Folio
-          </Link>
-          <nav className="flex flex-wrap items-center gap-3 text-sm">{nav}</nav>
-        </div>
-      </header>
-      <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>
-    </div>
+    <AppShell
+      brandHref={brandHref}
+      tabs={[{ href: brandHref, label: 'Home', mark: 'ledger' }]}
+    >
+      {children}
+    </AppShell>
   );
 }
 
-export function Button({
-  variant = 'primary',
-  className = '',
-  ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'primary' | 'ghost' | 'danger';
-}) {
-  const styles =
-    variant === 'primary'
-      ? 'bg-[var(--accent)] text-white hover:bg-[var(--accent-deep)]'
-      : variant === 'danger'
-        ? 'bg-red-700 text-white hover:bg-red-800'
-        : 'bg-transparent text-[var(--ink)] hover:bg-[var(--wash)]';
-  return (
-    <button
-      className={`inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition disabled:opacity-50 ${styles} ${className}`}
-      {...props}
-    />
-  );
+export function Button(
+  props: React.ComponentProps<typeof DsButton>,
+) {
+  return <DsButton {...props} />;
 }
 
-export function Field({
-  label,
-  id,
-  ...props
-}: InputHTMLAttributes<HTMLInputElement> & { label: string }) {
-  return (
-    <label className="block space-y-1.5 text-sm" htmlFor={id}>
-      <span className="font-medium text-[var(--ink-muted)]">{label}</span>
-      <input
-        id={id}
-        className="w-full rounded-md border border-[var(--rule)] bg-white px-3 py-2 text-[var(--ink)] outline-none ring-[var(--accent)] focus:ring-2"
-        {...props}
-      />
-    </label>
-  );
+export function Field(props: React.ComponentProps<typeof DsField>) {
+  return <DsField {...props} />;
 }
 
-export function TextArea({
-  label,
-  id,
-  ...props
-}: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { label: string }) {
-  return (
-    <label className="block space-y-1.5 text-sm" htmlFor={id}>
-      <span className="font-medium text-[var(--ink-muted)]">{label}</span>
-      <textarea
-        id={id}
-        className="min-h-28 w-full rounded-md border border-[var(--rule)] bg-white px-3 py-2 text-[var(--ink)] outline-none ring-[var(--accent)] focus:ring-2"
-        {...props}
-      />
-    </label>
-  );
+export function TextArea(props: React.ComponentProps<typeof DsTextArea>) {
+  return <DsTextArea {...props} />;
 }
 
-export function Select({
-  label,
-  id,
-  children,
-  ...props
-}: React.SelectHTMLAttributes<HTMLSelectElement> & {
-  label: string;
-  children: ReactNode;
-}) {
-  return (
-    <label className="block space-y-1.5 text-sm" htmlFor={id}>
-      <span className="font-medium text-[var(--ink-muted)]">{label}</span>
-      <select
-        id={id}
-        className="w-full rounded-md border border-[var(--rule)] bg-white px-3 py-2 outline-none ring-[var(--accent)] focus:ring-2"
-        {...props}
-      >
-        {children}
-      </select>
-    </label>
-  );
+export function Select(props: React.ComponentProps<typeof DsSelect>) {
+  return <DsSelect {...props} />;
 }
 
 export function Panel({
@@ -120,18 +63,18 @@ export function Panel({
       {(title || action) && (
         <div className="flex items-end justify-between gap-3">
           {title ? (
-            <h2 className="font-[family-name:var(--font-display)] text-xl">
+            <Text as="h2" face="display" size="xl">
               {title}
-            </h2>
+            </Text>
           ) : (
             <span />
           )}
           {action}
         </div>
       )}
-      <div className="rounded-lg border border-[var(--rule)] bg-[var(--paper-raised)] p-4 shadow-[0_1px_0_rgba(15,23,42,0.04)]">
+      <Surface variant="raised" className="p-4">
         {children}
-      </div>
+      </Surface>
     </section>
   );
 }
@@ -139,7 +82,10 @@ export function Panel({
 export function ErrorNote({ children }: { children: ReactNode }) {
   if (!children) return null;
   return (
-    <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
+    <p
+      className="rounded-[var(--folio-radius-sm)] border border-[var(--folio-halt)]/40 bg-[var(--folio-halt-dim)] px-3 py-2 text-[length:var(--folio-text-sm)] text-[var(--folio-halt)]"
+      role="alert"
+    >
       {children}
     </p>
   );
@@ -147,7 +93,9 @@ export function ErrorNote({ children }: { children: ReactNode }) {
 
 export function Empty({ children }: { children: ReactNode }) {
   return (
-    <p className="text-sm text-[var(--ink-muted)]">{children}</p>
+    <p className="text-[length:var(--folio-text-sm)] text-[var(--folio-ink-muted)]">
+      {children}
+    </p>
   );
 }
 
@@ -161,7 +109,7 @@ export function NavLink({
   return (
     <Link
       href={href}
-      className="text-[var(--ink-muted)] hover:text-[var(--accent)]"
+      className="text-[length:var(--folio-text-sm)] text-[var(--folio-ink-muted)] transition-colors duration-[var(--folio-dur-fast)] hover:text-[var(--folio-signal)]"
     >
       {children}
     </Link>

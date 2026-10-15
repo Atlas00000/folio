@@ -17,9 +17,5 @@ export default function HomePage() {
     router.replace(homeForRole(user.globalRole));
   }, [user, loading, router]);
 
-  return (
-    <div className="flex min-h-dvh items-center justify-center">
-      <p className="text-[var(--ink-muted)]">Opening Folio…</p>
-    </div>
-  );
+  return null;
 }

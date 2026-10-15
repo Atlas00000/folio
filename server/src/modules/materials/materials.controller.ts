@@ -96,9 +96,17 @@ export class MaterialsController {
       'Content-Type',
       material.mimeType ?? 'application/octet-stream',
     );
+    // ASCII-only filename — titles may include en/em dashes etc.
+    const safeName =
+      material.title
+        .normalize('NFKD')
+        .replace(/[^\w.\-]+/g, '_')
+        .replace(/_+/g, '_')
+        .replace(/^_|_$/g, '')
+        .slice(0, 80) || 'material';
     reply.header(
       'Content-Disposition',
-      `attachment; filename="${material.title.replace(/"/g, '')}"`,
+      `attachment; filename="${safeName}"`,
     );
     return reply.send(stream);
   }

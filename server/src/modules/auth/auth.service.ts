@@ -9,6 +9,7 @@ import { createHash, randomBytes } from 'crypto';
 import { and, eq, gt, isNull } from 'drizzle-orm';
 import { db } from '../../../db';
 import { passwordResetTokens, sessions, users } from '../../../db/schema';
+import { FolioLogger } from '../../common/logging';
 import { isUniversityEmail } from './uni-email';
 import { LoginDto } from './dto/login.dto';
 import {
@@ -20,6 +21,7 @@ import { RegisterDto } from './dto/register.dto';
 const SESSION_COOKIE = 'folio_session';
 const SESSION_DAYS = 14;
 const RESET_HOURS = 2;
+const log = new FolioLogger('auth');
 
 @Injectable()
 export class AuthService {
@@ -156,9 +158,11 @@ export class AuthService {
     });
 
     if (process.env.NODE_ENV !== 'production') {
-      console.log(
-        `[password-reset] ${email} token=${rawToken} url=/reset-password?token=${rawToken}`,
-      );
+      log.debug('password_reset_token_issued', {
+        email,
+        token: rawToken,
+        url: `/reset-password?token=${rawToken}`,
+      });
     }
 
     return { ok: true };

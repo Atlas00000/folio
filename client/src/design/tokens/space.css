@@ -1,0 +1,27 @@
+:root {
+  --folio-space-1: 0.25rem;
+  --folio-space-2: 0.5rem;
+  --folio-space-3: 0.75rem;
+  --folio-space-4: 1rem;
+  --folio-space-5: 1.5rem;
+  --folio-space-6: 2rem;
+  --folio-space-7: 3rem;
+  --folio-space-8: 4rem;
+  --folio-rail: 4.5rem;
+  /* ~75% of the viewport; still full-width on small screens via min() */
+  --folio-content-max: min(75vw, 100%);
+  --folio-content-narrow: 28rem;
+  /* Layout modes — align with Tailwind md (768px) */
+  --folio-bp-desktop: 768px;
+  --folio-dock-height: 4.25rem;
+  --folio-mobile-top: 3.25rem;
+  --folio-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --folio-safe-top: env(safe-area-inset-top, 0px);
+}
+
+/* Mobile: full-bleed content width */
+@media (max-width: 767px) {
+  :root {
+    --folio-content-max: 100%;
+  }
+}
